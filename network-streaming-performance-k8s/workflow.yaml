@@ -1,0 +1,191 @@
+input:
+  root: RootObject
+  objects:
+    RootObject:
+      id: RootObject
+      properties:
+        kubeconfig:
+          display:
+            description: The complete kubeconfig file as a string
+            name: Kubeconfig file contents
+          type:
+            type_id: string
+          required: true
+        uperf_protocol:
+          display:
+            description: The protol to use for the uperf workload
+            name: uperf protocol
+          type:
+            type_id: enum_string
+            values:
+              tcp:
+                name: TCP
+              udp:
+                name: UDP
+          default: '"tcp"'
+          required: true
+        uperf_nthreads:
+          display:
+            description: The number of threads for the uperf workload
+            name: uperf nthreads
+          type:
+            type_id: integer
+          default: 1
+          required: true
+        uperf_kbytes:
+          display:
+            description: The uperf workload packet size in KiB
+            name: uperf size
+          type:
+            type_id: integer
+          default: 64
+          required: true
+        uperf_runtime_seconds:
+          display:
+            description: The time in seconds to run the uperf workload
+            name: uperf runtime
+          type:
+            type_id: integer
+          default: 10
+          required: true
+        uperf_server_timeout_seconds:
+          display:
+            description: The time in seconds to run the uperf server
+            name: uperf server timeout
+          type:
+            type_id: integer
+          default: 20
+          required: true
+        run_id:
+          display:
+            description: A unique run identifier for tracking groups of workflows triggered by external automation/CI
+            name: Run ID
+          type:
+            type_id: string
+          default: "\"\""
+          required: false
+        pmlogger_interval:
+          display:
+            description: The logger collection interval for PCP pmlogger
+            name: PCP pmlogger collection interval
+          type:
+            type_id: integer
+steps:
+  uuidgen:
+    plugin: quay.io/arcalot/arcaflow-plugin-utilities:latest
+    step: uuid
+    input: {}
+  kubeconfig:
+    plugin: quay.io/arcalot/arcaflow-plugin-kubeconfig:latest
+    input:
+      kubeconfig: !expr $.input.kubeconfig
+  pcp:
+    plugin: quay.io/dustinblack/arcaflow-plugin-pcp-test:latest
+    step: start-pcp
+    input:
+      pmlogger_interval: !expr $.input.pmlogger_interval
+      run_duration: !expr $.input.uperf_server_timeout_seconds
+    deploy:
+      type: kubernetes
+      connection: !expr $.steps.kubeconfig.outputs.success.connection
+      pod:
+        metadata:
+          namespace: default
+          labels:
+            arcaflow: pcp
+        spec:
+          pluginContainer:
+            imagePullPolicy: Always
+  uperf_server:
+    plugin: quay.io/arcalot/arcaflow-plugin-uperf:sdk-update_6fe86dd
+    step: uperf_server
+    deploy:
+      type: kubernetes
+      connection: !expr $.steps.kubeconfig.outputs.success.connection
+      pod:
+        metadata:
+          namespace: default
+          labels:
+            arcaflow: uperf-server
+        spec:
+          pluginContainer:
+            imagePullPolicy: Always
+    input:
+      run_duration: !expr $.input.uperf_server_timeout_seconds
+  service:
+    plugin: quay.io/arcalot/arcaflow-plugin-service:latest
+    input:
+      connection: !expr $.steps.kubeconfig.outputs.success.connection
+      service:
+        metadata:
+          namespace: default
+        spec:
+          ports:
+           - name: control
+             port: 20000
+             protocol: TCP
+           - name: controludp
+             port: 20000
+             protocol: UDP
+           - name: workload
+             port: 30000
+             protocol: TCP
+           - name: workloadudp
+             port: 30000
+             protocol: UDP
+          selector:
+            arcaflow: uperf-server
+  uperf_client:
+    plugin: quay.io/arcalot/arcaflow-plugin-uperf:sdk-update_6fe86dd
+    step: uperf
+    deploy:
+      type: kubernetes
+      connection: !expr $.steps.kubeconfig.outputs.success.connection
+      pod:
+        metadata:
+          namespace: default
+          labels:
+            arcaflow: uperf-client
+        spec:
+          pluginContainer:
+            imagePullPolicy: Always
+    input:
+      name: "netperf"
+      groups:
+        - nthreads: !expr $.input.uperf_nthreads
+          transactions:
+            - iterations: 1
+              flowops:
+                - type: "accept"
+                  remotehost: !expr $.steps.service.outputs.success.name
+                  port: 20000
+                  protocol: !expr $.input.uperf_protocol
+            - duration: !expr $.input.uperf_runtime_seconds
+              flowops:
+                - type: "write"
+                  size: !expr $.input.uperf_kbytes
+                - type: "read"
+                  size: !expr $.input.uperf_kbytes
+            - iterations: 1
+              flowops:
+                - type: "disconnect"
+  metadata:
+    plugin: quay.io/arcalot/arcaflow-plugin-metadata:latest
+    deploy:
+      type: kubernetes
+      connection: !expr $.steps.kubeconfig.outputs.success.connection
+      pod:
+        metadata:
+          namespace: default
+          labels:
+            arcaflow: metadata
+        spec:
+          pluginContainer:
+            imagePullPolicy: Always
+    input: {}
+output:
+  uuid: !expr $.steps.uuidgen.outputs.success.uuid
+  run_id: !expr $.input.run_id
+  uperf: !expr $.steps.uperf_client.outputs.success
+  metadata: !expr $.steps.metadata.outputs.success
+  pcp: !expr $.steps.pcp.outputs.success
