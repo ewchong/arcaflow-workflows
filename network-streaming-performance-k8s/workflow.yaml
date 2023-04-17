@@ -96,6 +96,16 @@ steps:
         spec:
           pluginContainer:
             imagePullPolicy: Always
+              #          affinity:
+              #            podAffinity:
+              #              requiredDuringSchedulingIgnoredDuringExecution:
+              #              - labelSelector:
+              #                  matchExpressions:
+              #                  - key: arcaflow
+              #                    operator: In
+              #                    values:
+              #                    - uperf-client
+              #                topologyKey: node-role.kubernetes.io/worker
   uperf_server:
     plugin: quay.io/arcalot/arcaflow-plugin-uperf:0.2.0
     step: uperf_server
@@ -114,6 +124,11 @@ steps:
       run_duration: !expr $.input.uperf_server_timeout_seconds
   service:
     plugin: quay.io/arcalot/arcaflow-plugin-service:0.1.0
+    # Need to use host networking for kind cluster
+    deploy:
+      type: podman
+      podman:
+        networkMode: host
     input:
       connection: !expr $.steps.kubeconfig.outputs.success.connection
       service:
