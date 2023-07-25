@@ -1,0 +1,11 @@
+log:
+  level: debug
+deployer:
+  type: docker
+  deployment:
+    host:
+      NetworkMode: "host"
+    imagePullPolicy: IfNotPresent
+logged_outputs:
+  error:
+    level: error
