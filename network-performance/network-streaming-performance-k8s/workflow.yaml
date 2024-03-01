@@ -1,3 +1,4 @@
+version: v0.2.0
 input:
   root: RootObject
   objects:
@@ -22,6 +23,12 @@ input:
                 name: TCP
               udp:
                 name: UDP
+              ssl:
+                name: SSL
+              sctp:
+                name: SCTP
+              vsock:
+                name: VSOCK
           default: '"tcp"'
           required: true
         uperf_nthreads:
@@ -48,14 +55,6 @@ input:
             type_id: string
           default: "10s"
           required: true
-        uperf_server_timeout_seconds:
-          display:
-            description: The time in seconds to run the uperf server
-            name: uperf server timeout
-          type:
-            type_id: integer
-          default: 20
-          required: true
         run_id:
           display:
             description: A unique run identifier for tracking groups of workflows triggered by external automation/CI
@@ -72,21 +71,27 @@ input:
             type_id: integer
 steps:
   uuidgen:
-    plugin: quay.io/arcalot/arcaflow-plugin-utilities:0.2.0
+    plugin:
+      src: quay.io/arcalot/arcaflow-plugin-utilities:0.4.0
+      deployment_type: image
     step: uuid
     input: {}
   kubeconfig:
-    plugin: quay.io/arcalot/arcaflow-plugin-kubeconfig:0.2.0
+    plugin:
+      src: quay.io/arcalot/arcaflow-plugin-kubeconfig:0.3.1
+      deployment_type: image
     input:
       kubeconfig: !expr $.input.kubeconfig
   pcp:
-    plugin: quay.io/arcalot/arcaflow-plugin-pcp:0.2.0
+    plugin:
+      src: quay.io/arcalot/arcaflow-plugin-pcp:0.4.0
+      deployment_type: image
     step: start-pcp
+    stop_if: !expr $.steps.uperf_client.outputs
     input:
       pmlogger_interval: !expr $.input.pmlogger_interval
-      run_duration: !expr $.input.uperf_server_timeout_seconds
     deploy:
-      type: kubernetes
+      deployer_name: kubernetes
       connection: !expr $.steps.kubeconfig.outputs.success.connection
       pod:
         metadata:
@@ -107,10 +112,13 @@ steps:
               #                    - uperf-client
               #                topologyKey: node-role.kubernetes.io/worker
   uperf_server:
-    plugin: quay.io/arcalot/arcaflow-plugin-uperf:0.2.0
+    plugin:
+      src: quay.io/arcalot/arcaflow-plugin-uperf:0.5.0
+      deployment_type: image
     step: uperf_server
+    stop_if: !expr $.steps.uperf_client.outputs
     deploy:
-      type: kubernetes
+      deployer_name: kubernetes
       connection: !expr $.steps.kubeconfig.outputs.success.connection
       pod:
         metadata:
@@ -120,15 +128,12 @@ steps:
         spec:
           pluginContainer:
             imagePullPolicy: Always
-    input:
-      run_duration: !expr $.input.uperf_server_timeout_seconds
+    input: {}
   service:
-    plugin: quay.io/arcalot/arcaflow-plugin-service:0.1.0
-    # Need to use host networking for kind cluster
-    deploy:
-      type: podman
-      podman:
-        networkMode: host
+    # Note: If this step isn't working, make sure that the network mode is set to host here or in the config.yaml
+    plugin:
+      src: quay.io/arcalot/arcaflow-plugin-service:0.1.0
+      deployment_type: image
     input:
       connection: !expr $.steps.kubeconfig.outputs.success.connection
       service:
@@ -142,19 +147,15 @@ steps:
            - name: controludp
              port: 20000
              protocol: UDP
-           - name: workload
-             port: 30000
-             protocol: TCP
-           - name: workloadudp
-             port: 30000
-             protocol: UDP
           selector:
             arcaflow: uperf-server
   uperf_client:
-    plugin: quay.io/arcalot/arcaflow-plugin-uperf:0.2.0
+    plugin:
+      src: quay.io/arcalot/arcaflow-plugin-uperf:0.5.0
+      deployment_type: image
     step: uperf
     deploy:
-      type: kubernetes
+      deployer_name: kubernetes
       connection: !expr $.steps.kubeconfig.outputs.success.connection
       pod:
         metadata:
@@ -185,9 +186,11 @@ steps:
               flowops:
                 - type: "disconnect"
   metadata:
-    plugin: quay.io/arcalot/arcaflow-plugin-metadata:0.1.0
+    plugin:
+      src: quay.io/arcalot/arcaflow-plugin-metadata:0.4.0
+      deployment_type: image
     deploy:
-      type: kubernetes
+      deployer_name: kubernetes
       connection: !expr $.steps.kubeconfig.outputs.success.connection
       pod:
         metadata:
