@@ -1,0 +1,8 @@
+repeated_inputs: 
+  name: mogo
+  ratio: 3.14
+iterations:
+  - loop_id: 1
+  - loop_id: 2
+  - loop_id: 3
+  - loop_id: 4

@@ -1,0 +1,49 @@
+# This workflow uses a plugin which returns the value of 
+# the name input as its output. The other input values are 
+# bundled with the plugin output as this subworkflow's 
+# output. This workflow serves as a stand-in for what in 
+# a real world scenario would be a more complex operation.
+version: v0.2.0
+input:
+  root: SubRootObject__RepeatedValues
+  objects:
+    SubRootObject__RepeatedValues:
+      id: SubRootObject__RepeatedValues
+      properties:
+        constant:
+          type:
+            type_id: ref
+            id: RepeatedValues
+        item:
+          type:
+            type_id: ref
+            id: SubRootObject
+    RepeatedValues:
+      id: RepeatedValues
+      properties:
+        name:
+          type:
+            type_id: string
+        ratio:
+          type:
+            type_id: float
+    SubRootObject:
+      id: SubRootObject
+      properties:
+        loop_id:
+          type:
+            type_id: integer
+
+steps:
+  example:
+    plugin:
+      deployment_type: image
+      src: quay.io/arcalot/arcaflow-plugin-template-python:0.4.0
+    input:
+      name: !expr $.input.constant.name
+
+outputs:
+  success:
+    loop_id: !expr $.input.item.loop_id
+    ratio: !expr $.input.constant.ratio
+    beatle: !expr $.steps.example.outputs.success
