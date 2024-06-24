@@ -6,5 +6,8 @@ logged_outputs:
 deployers:
   image:
     deployer_name: podman
+    podman:
+      connectionName: "laptop"
     deployment:
       imagePullPolicy: IfNotPresent
+

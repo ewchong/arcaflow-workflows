@@ -5,27 +5,11 @@ input:
     RootObject:
       id: RootObject
       properties:
-        iterations:
+        coremark_pro_params:
           type:
-            type_id: list
-            items:
-              type_id: object
-              id: SubRootObject
-              properties:
-                loop_id:
-                  display:
-                    description: ID value for the loop iteration
-                    name: Loop ID
-                  required: true
-                  type:
-                    type_id: integer
-                nickname:
-                  display:
-                    description: Just a name
-                    name: Name
-                  required: true
-                  type:
-                    type_id: string
+            type_id: ref
+            id: TuneIterationsInput
+            namespace: $.steps.tune_iterations.starting.inputs.input
 
 steps:
   metadata:
@@ -33,9 +17,22 @@ steps:
       deployment_type: image
       src: quay.io/arcalot/arcaflow-plugin-metadata:0.4.0
     input: {}
+  # Tune the iterations to the target time
+  tune_iterations:
+    plugin:
+      deployment_type: image
+      src: quay.io/arcalot/arcaflow-plugin-coremark-pro
+    step: tune-iterations
+    input: !expr $.input.coremark_pro_params
+
   foreach_loop:
     kind: foreach
-    items: !expr $.input.iterations
+    items:
+      - !expr $.steps.tune_iterations.outputs.success
+      - !expr $.steps.tune_iterations.outputs.success
+      - !expr $.steps.tune_iterations.outputs.success
+      - !expr $.steps.tune_iterations.outputs.success
+      - !expr $.steps.tune_iterations.outputs.success
     workflow: sub-workflow.yaml
     parallelism: 1
 
@@ -43,3 +40,4 @@ outputs:
   success:
     metadata: !expr $.steps.metadata.outputs.success
     fab_four: !expr $.steps.foreach_loop.outputs.success.data
+    tuning: !expr $.steps.tune_iterations.outputs.success
