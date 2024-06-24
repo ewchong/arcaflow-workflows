@@ -28,16 +28,15 @@ steps:
   foreach_loop:
     kind: foreach
     items:
-      - !expr $.steps.tune_iterations.outputs.success
-      - !expr $.steps.tune_iterations.outputs.success
-      - !expr $.steps.tune_iterations.outputs.success
-      - !expr $.steps.tune_iterations.outputs.success
-      - !expr $.steps.tune_iterations.outputs.success
+      - coremark_pro_params: !expr $.steps.tune_iterations.outputs.success
+      - coremark_pro_params: !expr $.steps.tune_iterations.outputs.success
+      - coremark_pro_params: !expr $.steps.tune_iterations.outputs.success
+      - coremark_pro_params: !expr $.steps.tune_iterations.outputs.success
+      - coremark_pro_params: !expr $.steps.tune_iterations.outputs.success
     workflow: sub-workflow.yaml
     parallelism: 1
 
 outputs:
   success:
     metadata: !expr $.steps.metadata.outputs.success
-    fab_four: !expr $.steps.foreach_loop.outputs.success.data
-    tuning: !expr $.steps.tune_iterations.outputs.success
+    coremark_pro_results: !expr $.steps.foreach_loop.outputs.success.data
