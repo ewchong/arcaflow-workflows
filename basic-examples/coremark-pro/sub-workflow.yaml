@@ -1,0 +1,24 @@
+version: v0.2.0
+input:
+  root: CoremarkProInput
+  objects:
+    CoremarkProInput:
+      id: CoremarkProInput
+      properties:
+        coremark_pro_params:
+          type:
+            type_id: ref
+            id: CertifyAllInput
+            namespace: $.steps.certify_all.starting.inputs.input
+
+steps:
+  certify_all:
+    plugin:
+      deployment_type: image
+      src: quay.io/arcalot/arcaflow-plugin-coremark-pro:fix-multithread_13d353f
+    step: certify-all
+    input: !expr $.input.coremark_pro_params
+
+outputs:
+  success:
+    coremark_pro_results: !expr $.steps.certify_all.outputs.success

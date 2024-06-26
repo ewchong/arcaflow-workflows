@@ -1,0 +1,13 @@
+log:
+  level: debug
+logged_outputs:
+  error:
+    level: debug
+deployers:
+  image:
+    deployer_name: podman
+    podman:
+      connectionName: "ti"
+    deployment:
+      imagePullPolicy: IfNotPresent
+

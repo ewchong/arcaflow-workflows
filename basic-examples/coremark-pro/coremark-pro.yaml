@@ -1,0 +1,325 @@
+output_data:
+    coremark_pro_results:
+        - coremark_pro_results:
+            coremark_pro_command: make -s certify-all XCMD='-v0 -c8 -w1'
+            coremark_pro_params:
+                contexts: 8
+                verify: false
+                workers: 1
+            coremark_pro_results:
+                CoreMark-PRO:
+                    MultiCore: 14677.91
+                    Scaling: 5.73
+                    SingleCore: 2562.35
+                cjpeg-rose7-preset:
+                    Iterations: 770
+                    MultiCore: 659.25
+                    Scaling: 7.95
+                    SingleCore: 82.88
+                core:
+                    Iterations: 9
+                    MultiCore: 3.61
+                    Scaling: 4.51
+                    SingleCore: 0.8
+                linear_alg-mid-100x100-sp:
+                    Iterations: 770
+                    MultiCore: 634.27
+                    Scaling: 7.91
+                    SingleCore: 80.21
+                loops-all-mid-10k-sp:
+                    Iterations: 26
+                    MultiCore: 9.46
+                    Scaling: 3.6
+                    SingleCore: 2.63
+                nnet_test:
+                    Iterations: 39
+                    MultiCore: 29.15
+                    Scaling: 7.29
+                    SingleCore: 4
+                parser-125k:
+                    Iterations: 102
+                    MultiCore: 68.97
+                    Scaling: 6.37
+                    SingleCore: 10.82
+                radix2-big-64k:
+                    Iterations: 455
+                    MultiCore: 773.81
+                    Scaling: 2.51
+                    SingleCore: 308.47
+                sha-test:
+                    Iterations: 1429
+                    MultiCore: 1217.21
+                    Scaling: 7.96
+                    SingleCore: 152.82
+                zip-test:
+                    Iterations: 455
+                    MultiCore: 331.15
+                    Scaling: 7.01
+                    SingleCore: 47.25
+        - coremark_pro_results:
+            coremark_pro_command: make -s certify-all XCMD='-v0 -c8 -w1'
+            coremark_pro_params:
+                contexts: 8
+                verify: false
+                workers: 1
+            coremark_pro_results:
+                CoreMark-PRO:
+                    MultiCore: 14679.7
+                    Scaling: 5.74
+                    SingleCore: 2558.65
+                cjpeg-rose7-preset:
+                    Iterations: 770
+                    MultiCore: 659.81
+                    Scaling: 8.01
+                    SingleCore: 82.39
+                core:
+                    Iterations: 9
+                    MultiCore: 3.61
+                    Scaling: 4.51
+                    SingleCore: 0.8
+                linear_alg-mid-100x100-sp:
+                    Iterations: 770
+                    MultiCore: 629.08
+                    Scaling: 7.92
+                    SingleCore: 79.46
+                loops-all-mid-10k-sp:
+                    Iterations: 26
+                    MultiCore: 9.34
+                    Scaling: 3.54
+                    SingleCore: 2.64
+                nnet_test:
+                    Iterations: 39
+                    MultiCore: 29.37
+                    Scaling: 7.27
+                    SingleCore: 4.04
+                parser-125k:
+                    Iterations: 102
+                    MultiCore: 69.2
+                    Scaling: 6.43
+                    SingleCore: 10.76
+                radix2-big-64k:
+                    Iterations: 455
+                    MultiCore: 781.79
+                    Scaling: 2.55
+                    SingleCore: 306.81
+                sha-test:
+                    Iterations: 1429
+                    MultiCore: 1218.24
+                    Scaling: 7.97
+                    SingleCore: 152.88
+                zip-test:
+                    Iterations: 455
+                    MultiCore: 330.91
+                    Scaling: 7.01
+                    SingleCore: 47.21
+        - coremark_pro_results:
+            coremark_pro_command: make -s certifyb-all XCMD='-v0 -c8 -w1'
+            coremark_pro_params:
+                contexts: 8
+                verify: false
+                workers: 1
+            coremark_pro_results:
+                CoreMark-PRO:
+                    MultiCore: 14651.79
+                    Scaling: 5.75
+                    SingleCore: 2548.34
+                cjpeg-rose7-preset:
+                    Iterations: 770
+                    MultiCore: 659.81
+                    Scaling: 7.96
+                    SingleCore: 82.92
+                core:
+                    Iterations: 9
+                    MultiCore: 3.62
+                    Scaling: 4.52
+                    SingleCore: 0.8
+                linear_alg-mid-100x100-sp:
+                    Iterations: 770
+                    MultiCore: 633.74
+                    Scaling: 7.99
+                    SingleCore: 79.32
+                loops-all-mid-10k-sp:
+                    Iterations: 26
+                    MultiCore: 9.51
+                    Scaling: 3.62
+                    SingleCore: 2.63
+                nnet_test:
+                    Iterations: 39
+                    MultiCore: 28.7
+                    Scaling: 7.42
+                    SingleCore: 3.87
+                parser-125k:
+                    Iterations: 102
+                    MultiCore: 69.96
+                    Scaling: 6.48
+                    SingleCore: 10.8
+                radix2-big-64k:
+                    Iterations: 455
+                    MultiCore: 759.6
+                    Scaling: 2.48
+                    SingleCore: 306.4
+                sha-test:
+                    Iterations: 1429
+                    MultiCore: 1218.24
+                    Scaling: 7.97
+                    SingleCore: 152.92
+                zip-test:
+                    Iterations: 455
+                    MultiCore: 329.47
+                    Scaling: 6.96
+                    SingleCore: 47.36
+        - coremark_pro_results:
+            coremark_pro_command: make -s certify-all XCMD='-v0 -c8 -w1'
+            coremark_pro_params:
+                contexts: 8
+                verify: false
+                workers: 1
+            coremark_pro_results:
+                CoreMark-PRO:
+                    MultiCore: 14619.98
+                    Scaling: 5.82
+                    SingleCore: 2513.67
+                cjpeg-rose7-preset:
+                    Iterations: 770
+                    MultiCore: 658.68
+                    Scaling: 7.98
+                    SingleCore: 82.49
+                core:
+                    Iterations: 9
+                    MultiCore: 3.61
+                    Scaling: 4.51
+                    SingleCore: 0.8
+                linear_alg-mid-100x100-sp:
+                    Iterations: 770
+                    MultiCore: 636.89
+                    Scaling: 7.98
+                    SingleCore: 79.85
+                loops-all-mid-10k-sp:
+                    Iterations: 26
+                    MultiCore: 9.47
+                    Scaling: 3.61
+                    SingleCore: 2.62
+                nnet_test:
+                    Iterations: 39
+                    MultiCore: 29.08
+                    Scaling: 7.55
+                    SingleCore: 3.85
+                parser-125k:
+                    Iterations: 102
+                    MultiCore: 68.41
+                    Scaling: 6.33
+                    SingleCore: 10.8
+                radix2-big-64k:
+                    Iterations: 455
+                    MultiCore: 755.81
+                    Scaling: 2.76
+                    SingleCore: 273.93
+                sha-test:
+                    Iterations: 1429
+                    MultiCore: 1217.21
+                    Scaling: 7.96
+                    SingleCore: 152.9
+                zip-test:
+                    Iterations: 455
+                    MultiCore: 329.23
+                    Scaling: 6.98
+                    SingleCore: 47.19
+        - coremark_pro_results:
+            coremark_pro_command: make -s certify-all XCMD='-v0 -c8 -w1'
+            coremark_pro_params:
+                contexts: 8
+                verify: false
+                workers: 1
+            coremark_pro_results:
+                CoreMark-PRO:
+                    MultiCore: 14696.75
+                    Scaling: 5.75
+                    SingleCore: 2556.67
+                cjpeg-rose7-preset:
+                    Iterations: 770
+                    MultiCore: 660.38
+                    Scaling: 7.99
+                    SingleCore: 82.64
+                core:
+                    Iterations: 9
+                    MultiCore: 3.61
+                    Scaling: 4.51
+                    SingleCore: 0.8
+                linear_alg-mid-100x100-sp:
+                    Iterations: 770
+                    MultiCore: 634.79
+                    Scaling: 7.88
+                    SingleCore: 80.55
+                loops-all-mid-10k-sp:
+                    Iterations: 26
+                    MultiCore: 9.56
+                    Scaling: 3.63
+                    SingleCore: 2.63
+                nnet_test:
+                    Iterations: 39
+                    MultiCore: 29.43
+                    Scaling: 7.51
+                    SingleCore: 3.92
+                parser-125k:
+                    Iterations: 102
+                    MultiCore: 69.34
+                    Scaling: 6.41
+                    SingleCore: 10.81
+                radix2-big-64k:
+                    Iterations: 455
+                    MultiCore: 754.56
+                    Scaling: 2.45
+                    SingleCore: 308.06
+                sha-test:
+                    Iterations: 1429
+                    MultiCore: 1217.21
+                    Scaling: 7.96
+                    SingleCore: 152.87
+                zip-test:
+                    Iterations: 455
+                    MultiCore: 334.07
+                    Scaling: 7.06
+                    SingleCore: 47.29
+    metadata:
+        architecture: aarch64
+        env:
+            _: /usr/bin/python
+            AD_HOC_COMMAND_ID: "1"
+            ANSIBLE_CACHE_PLUGIN: jsonfile
+            ANSIBLE_CACHE_PLUGIN_CONNECTION: /tmp/artifacts/a56283e8-c12f-4668-b884-4306c79f717b/fact_cache
+            ANSIBLE_CALLBACK_PLUGINS: /usr/local/lib/python3.9/site-packages/ansible_runner/display_callback/callback
+            ANSIBLE_HOST_KEY_CHECKING: "False"
+            ANSIBLE_LOAD_CALLBACK_PLUGINS: "1"
+            ANSIBLE_RETRY_FILES_ENABLED: "False"
+            ANSIBLE_STDOUT_CALLBACK: awx_display
+            AWX_ISOLATED_DATA_DIR: /tmp/artifacts/a56283e8-c12f-4668-b884-4306c79f717b
+            HOME: /root
+            HOSTNAME: 946be38fc7f6
+            LC_CTYPE: C.UTF-8
+            PATH: /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+            PWD: /tmp
+            RUNNER_OMIT_EVENTS: "False"
+            RUNNER_ONLY_FAILED_EVENTS: "False"
+            SHLVL: "2"
+            container: podman
+        fqdn: 946be38fc7f6
+        kernel: 5.14.0-454.407.el9iv.aarch64
+        memtotal_mb: 31819
+        processor:
+            - "0"
+            - "1"
+            - "2"
+            - "3"
+            - "4"
+            - "5"
+            - "6"
+            - "7"
+        processor_cores: 1
+        processor_count: 8
+        processor_threads_per_core: 1
+        product_name: Texas Instruments J784S4 EVM
+        product_version: Unknown
+        swaptotal_mb: 0
+        system_vendor: ti,j784s4-evm
+        uptime_seconds: 1025022
+output_id: success
